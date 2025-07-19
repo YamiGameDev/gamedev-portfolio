@@ -17,12 +17,14 @@ export const ProgressProvider = ({ children }) => {
     courses: {
       1: { progress: 78, completedLessons: [1, 2], completedAssignments: [1] },
       2: { progress: 45, completedLessons: [1, 2], completedAssignments: [1, 2] },
-      3: { progress: 92, completedLessons: [1, 2, 3], completedAssignments: [1, 2, 3] }
+      3: { progress: 92, completedLessons: [1, 2, 3], completedAssignments: [1, 2, 3] },
+      4: { progress: 25, completedLessons: [1], completedAssignments: [] }
     },
     lessons: {
       1: [1, 2], // Course 1 completed lessons
       2: [1, 2], // Course 2 completed lessons  
-      3: [1, 2, 3] // Course 3 completed lessons
+      3: [1, 2, 3], // Course 3 completed lessons
+      4: [1] // Course 4 completed lessons
     }
   });
 
@@ -34,8 +36,16 @@ export const ProgressProvider = ({ children }) => {
         ? currentLessons.filter(id => id !== lessonId)
         : [...currentLessons, lessonId];
       
-      // Calculate new progress percentage (mock calculation)
-      const totalLessons = 4; // Assuming 4 lessons per course
+      // Calculate new progress percentage based on actual lesson count
+      const getLessonCount = (courseId) => {
+        switch(courseId) {
+          case 1: return 40; // Game Development
+          case 4: return 8;  // ETECH
+          default: return 4; // Other courses
+        }
+      };
+      
+      const totalLessons = getLessonCount(courseId);
       const newProgress = Math.round((newLessons.length / totalLessons) * 100);
       
       return {
